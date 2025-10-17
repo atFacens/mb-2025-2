@@ -18,6 +18,11 @@ class _MyHomePageState extends State<MyHomePage> {
     TaskItem(tile: 'Segunda tarefa'),
   ];
 
+  void newTask(String titulo) {
+    setState(() {
+      tasks.add(TaskItem(tile: titulo));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: 
-        () => Navigator.push(
+        onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NewTask()),
+          MaterialPageRoute(builder: (context) => NewTask(onSave: newTask)),
         ),
         child: const Icon(Icons.add),
       ),
     );
   }
 }
-
-
