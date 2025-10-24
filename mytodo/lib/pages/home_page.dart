@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mytodo/components/task_card.dart';
 import 'package:mytodo/model/task_item.dart';
 import 'package:mytodo/pages/new_task.dart';
+import 'package:mytodo/repo/task_db.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -13,16 +14,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<TaskItem> tasks = [
-    TaskItem(tile: 'Primeira tarefa'),
-    TaskItem(tile: 'Segunda tarefa'),
-  ];
+  List<TaskItem> tasks = [];
 
-  void newTask(String titulo) {
+  // void newTask(String titulo) {
+  //   setState(() {
+  //     tasks.add(TaskItem(title: titulo));
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    updateTaskList();
+  }
+
+  void updateTaskList() async {
+    tasks = await TaskDB.db.getAll();
     setState(() {
-      tasks.add(TaskItem(tile: titulo));
+      
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NewTask(onSave: newTask)),
+          MaterialPageRoute(builder: (context) => NewTask(onSave: updateTaskList)),
         ),
         child: const Icon(Icons.add),
       ),

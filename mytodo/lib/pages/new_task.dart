@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mytodo/model/task_item.dart';
+import 'package:mytodo/repo/task_db.dart';
 
 class NewTask extends StatefulWidget {
-  final void Function(String) onSave;
+  final void Function() onSave;
 
   const NewTask({super.key, required this.onSave});
 
@@ -33,9 +35,11 @@ TextEditingController controller = TextEditingController();
             ),
           ),
           ElevatedButton(
-            onPressed: () => {
-              widget.onSave(controller.text),
-              Navigator.pop(context)
+            onPressed: () async {
+              TaskItem taskItem = TaskItem(title: controller.text);
+              await TaskDB.db.newTask(taskItem);
+              widget.onSave();
+              Navigator.pop(context);
               },
             child: Text('Gravar'),
           ),

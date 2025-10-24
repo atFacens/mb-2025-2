@@ -20,7 +20,7 @@ class _TaskCardState extends State<TaskCard> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              widget.task.tile,
+              widget.task.title,
               style: TextStyle(
                 decoration: (widget.task.done)
                     ? TextDecoration.lineThrough
