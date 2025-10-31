@@ -16,12 +16,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<TaskItem> tasks = [];
 
-  // void newTask(String titulo) {
-  //   setState(() {
-  //     tasks.add(TaskItem(title: titulo));
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -31,10 +25,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void updateTaskList() async {
     tasks = await TaskDB.db.getAll();
     setState(() {
-      
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +41,56 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (context, index) {
-                return TaskCard(task: tasks[index]);
+                return TaskCard(task: tasks[index], onUpdate: updateTaskList);
               },
             ),
           ),
         ],
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => NewTask(onSave: updateTaskList)),
-        ),
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: 'novo',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewTask(onSave: updateTaskList)),
+            ),
+            child: const Icon(Icons.add),
+          ),
+          SizedBox(width: 12,),
+          FloatingActionButton(
+            heroTag: 'delete',
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.red,
+            child: const Icon(Icons.delete_sweep_outlined,),
+            onPressed: () => {
+              _showConfirmation()
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  Future<Future<dynamic>> _showConfirmation() async {
+    return showDialog(context: context, 
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ATENÇÃO!'),
+          content: Text('Você quer realmente apagar TODAS as tarefas?'),
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.pop(context);
+            }, child: Text('Cancelar')),
+            TextButton(onPressed: () async {
+              await TaskDB.db.deleteAll();
+              updateTaskList();
+              Navigator.pop(context);
+            }, child: Text('Apagar'))
+          ],);
+      });
   }
 }

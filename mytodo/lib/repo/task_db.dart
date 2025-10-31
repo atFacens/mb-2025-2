@@ -53,4 +53,23 @@ class TaskDB {
 
     return list;
   }
+
+  Future<void> completeTask(TaskItem task) async {
+    final db = await database;
+
+    task.done = !task.done;
+    await db!.update("TaskItem", task.toMap(), where: "id=?", whereArgs: [task.id]);
+  }
+
+  Future<void> delete(TaskItem task) async {
+    final db = await database;
+
+    await db!.delete("TaskItem", where: "id=?", whereArgs: [task.id] );
+  }
+
+  Future<void> deleteAll() async {
+    final db = await database;
+
+    await db!.delete("TaskItem");
+  }
 }

@@ -14,6 +14,6 @@ class TaskItem {
   Map<String, dynamic> toMap() => {
         "id": id,
         "title": title,
-        "done": done,
+        "done": done ? 1 : 0,
   };
 }

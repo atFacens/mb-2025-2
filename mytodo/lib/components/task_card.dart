@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/model/task_item.dart';
+import 'package:mytodo/repo/task_db.dart';
 
 class TaskCard extends StatefulWidget {
-  const TaskCard({super.key, required this.task});
-
+  final void Function() onUpdate;
   final TaskItem task;
+
+  const TaskCard({super.key, required this.task, required this.onUpdate});
 
   @override
   State<TaskCard> createState() => _TaskCardState();
@@ -33,12 +35,17 @@ class _TaskCardState extends State<TaskCard> {
                   icon: Icon(Icons.check),
                   color: (widget.task.done) ? Colors.grey : Colors.green,
                   onPressed: () {
-                    setState(() {
-                      widget.task.done = !widget.task.done;
-                    });
+                    TaskDB.db.completeTask(widget.task);
+                    widget.onUpdate();
                   },
                 ),
-                IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    TaskDB.db.delete(widget.task);
+                    widget.onUpdate();
+                  },
+                ),
               ],
             ),
           ],
