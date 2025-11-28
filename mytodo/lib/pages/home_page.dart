@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mytodo/components/task_card.dart';
 import 'package:mytodo/model/task_item.dart';
 import 'package:mytodo/pages/new_task.dart';
-import 'package:mytodo/repo/task_db.dart';
+// import 'package:mytodo/repo/task_db.dart';
+import 'package:mytodo/repo/task_fb.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -23,7 +24,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void updateTaskList() async {
-    tasks = await TaskDB.db.getAll();
+    // tasks = await TaskDB.db.getAll();
+    tasks = await TaskFB().read();
     setState(() {
     });
   }
@@ -86,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pop(context);
             }, child: Text('Cancelar')),
             TextButton(onPressed: () async {
-              await TaskDB.db.deleteAll();
+              //await TaskDB.db.deleteAll();
               updateTaskList();
               Navigator.pop(context);
             }, child: Text('Apagar'))

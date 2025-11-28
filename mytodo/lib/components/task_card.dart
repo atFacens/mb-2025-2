@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/model/task_item.dart';
-import 'package:mytodo/repo/task_db.dart';
+// import 'package:mytodo/repo/task_db.dart';
 
 class TaskCard extends StatefulWidget {
   final void Function() onUpdate;
@@ -35,14 +35,14 @@ class _TaskCardState extends State<TaskCard> {
                   icon: Icon(Icons.check),
                   color: (widget.task.done) ? Colors.grey : Colors.green,
                   onPressed: () {
-                    TaskDB.db.completeTask(widget.task);
+                    //TaskDB.db.completeTask(widget.task);
                     widget.onUpdate();
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
-                    TaskDB.db.delete(widget.task);
+                    //TaskDB.db.delete(widget.task);
                     widget.onUpdate();
                   },
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/model/task_item.dart';
-import 'package:mytodo/repo/task_db.dart';
+// import 'package:mytodo/repo/task_db.dart';
+import 'package:mytodo/repo/task_fb.dart';
 
 class NewTask extends StatefulWidget {
   final void Function() onSave;
@@ -37,7 +38,8 @@ TextEditingController controller = TextEditingController();
           ElevatedButton(
             onPressed: () async {
               TaskItem taskItem = TaskItem(title: controller.text);
-              await TaskDB.db.newTask(taskItem);
+              await TaskFB().create(taskItem);
+              // await TaskDB.db.newTask(taskItem);
               widget.onSave();
               Navigator.pop(context);
               },

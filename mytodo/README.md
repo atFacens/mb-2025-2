@@ -1,16 +1,24 @@
 # mytodo
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Conectando com o Firebase
+- crie uma conta no Firebase
+- Instale o NodeJs
+- Instale Firebase Tools: > npm install -g firebase-tools
+- Faça o login: > firebase login
+- Ative: > dart pub global activate flutterfire_cli
+- Configure: > flutterfire configure
+- Instale a dependência: > flutter pub add firebase_core
+- Configure o projeto: > flutterfire configure
+- Ajuste o main:
+```dart
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+runApp(const MyApp());
+```
